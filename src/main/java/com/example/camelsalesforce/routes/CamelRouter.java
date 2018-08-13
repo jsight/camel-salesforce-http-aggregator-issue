@@ -95,14 +95,14 @@ public class CamelRouter extends RouteBuilder {
     			throw new IllegalArgumentException("Unrecognized file type: " + fileName);
     		}
     	})
-//    	.to("seda:enrichWithJobId?waitForTaskToComplete=Always")
-    	.enrich("direct:createJobAndGetID", new AggregationStrategy() {
-			@Override
-			public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
-				oldExchange.getIn().setHeader("jobId", newExchange.getIn().getBody(JobInfo.class).getId());
-				return oldExchange;
-			}
-		})
+    	.to("seda:enrichWithJobId?waitForTaskToComplete=Always")
+//    	.enrich("direct:createJobAndGetID", new AggregationStrategy() {
+//			@Override
+//			public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
+//				oldExchange.getIn().setHeader("jobId", newExchange.getIn().getBody(JobInfo.class).getId());
+//				return oldExchange;
+//			}
+//		})
 		.process(exchange -> {
 	    	List<Map<String, Object>> results = new ArrayList<>();
 	    	for (List<String> fieldData : (List<List<String>>)exchange.getIn().getBody(List.class)) {
